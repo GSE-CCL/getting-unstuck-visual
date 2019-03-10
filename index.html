@@ -8,32 +8,39 @@
 </head>
 <body>
 
-    <h1>Block Frequency</h1>
-    <div id="blocks"></div>
-
     <h1>Block Category Frequency</h1>
-    <select class="form-control" id="block-cat" align: "center">
+    <div id="category"></div>
+
+    <h1>Block Frequency</h1><br>
+    <p id="suggestion"></p>
+    <select class="form-control" id="block-cat">
         <option value="all">All Categories</option>
         <option value="motion">Motion</option>
         <option value="control">Control</option>
         <option value="event">Event</option>
         <option value="looks">Looks</option>
-        <option value="operator">Operator</option>
+        <option value="operators">Operator</option>
         <option value="sensing">Sensing</option>
         <option value="sound">Sound</option>
-        <option value="variable">Variable</option>
-        <option value="my_blocks">My Blocks</option>
+        <option value="variables">Variable</option>
+        <option value="more_blocks">My Blocks</option>
     </select>
-    <div id="category"></div>
+    <div id="blocks"></div>
+
+
     
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/d3.min.js"></script>
-    <script src="js/require.js"></script>
+    <!--<script src="js/require.js"></script>-->
 
-    <script src="js/scratch_analysis.js"></script>
+
+    <script src="http://d3js.org/queue.v1.min.js"></script>
+    <script src="js/block_data.js"></script>
     <script src="js/main.js"></script>
+    <!--<script src="js/scratch_analysis.js"></script>-->
+
 
 </body>
 </html>
