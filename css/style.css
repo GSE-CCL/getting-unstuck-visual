@@ -1,0 +1,16 @@
+/* custom css rules */
+
+body {
+	font-family: 'Raleway', sans-serif;
+}
+
+h1 {
+	text-align: center;
+	margin-top: 15px;
+}
+
+#block-cat {
+	width: 200px;
+	display: block;
+	margin: 0 auto;
+}
