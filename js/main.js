@@ -3,7 +3,7 @@ var sprites = [];
 var block_count = [];
 var scriptTemp = [];
 var new_category_data = [];
-
+var jsonObj;
 
 // SVG MAKE
 var margin = {top: 40, right: 10, bottom: 150, left: 60};
@@ -90,12 +90,20 @@ cat_svg.append("g")
 
 d3.select("#block-cat").on("change", updateVisualization);
 
-// Parse Data from Scratch projects with S3 file type, Quentin_GU_Day1S3
-$(document).ready(function(){
-    $.getJSON( "projects/Quentin_GU_Day1S3/project.json", function(json) {
-        data = json;
-        console.log(data.targets);
-        data.targets.forEach(function(d) {
+
+$("#scratch_json").change(function() {
+    // will log a FileList object, view gifs below
+    console.log(this.files);
+    var reader = new FileReader();
+
+    reader.onload = function(event) {
+        jsonObj = JSON.parse(event.target.result);
+        console.log(jsonObj);
+        console.log(jsonObj.targets);
+
+        data = jsonObj.targets;
+        console.log(data);
+        data.forEach(function(d) {
             if(d.isStage === false) {
                 console.log(d.name);
 
@@ -197,8 +205,20 @@ $(document).ready(function(){
 
             }
         });
-    })
-});
+    };
+
+    reader.readAsText(event.target.files[0]);
+
+
+    });
+
+
+
+
+// Parse Data from Scratch projects with S3 file type, Quentin_GU_Day1S3
+// How to dynamically substitute jsonObj? Use document wait for jsonObj to exist!
+
+
 
 updateVisualization();
 
@@ -265,8 +285,8 @@ function updateVisualization() {
         var cat_length = Math.floor((Math.random() * specific_blocks.length) + 1);
         console.log(box_blocknames);
         console.log(cat_length);
-        console.log(box_blocknames[cat_length]);
-        console.log(box_blocknames[cat_length].label);
+        // console.log(box_blocknames[cat_length]);
+        // console.log(box_blocknames[cat_length].label);
         document.getElementById("suggestion").innerHTML = "You didn't use any " + boxVal + " blocks in this project. Have you considered using the <b>" + box_blocknames[cat_length].label + "</b> block?";
     }
 
