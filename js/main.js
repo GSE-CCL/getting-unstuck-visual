@@ -90,7 +90,6 @@ cat_svg.append("g")
 
 d3.select("#block-cat").on("change", updateVisualization);
 
-
 $("#scratch_json").change(function() {
     // will log a FileList object, view gifs below
     console.log(this.files);
@@ -99,113 +98,122 @@ $("#scratch_json").change(function() {
     reader.onload = function(event) {
         jsonObj = JSON.parse(event.target.result);
         console.log(jsonObj);
-        console.log(jsonObj.targets);
+        if("objName" in jsonObj) {
+            console.log("no");
+            document.getElementById("get_json").style.display="none";
+            document.getElementById("refresh").innerHTML = "Please refresh and upload a JSON from a Scratch 3 Project";
+            // document.getElementById('top_image').src='http://i.cubeupload.com/gFmaKG.png'
+        }
+        else {
+            console.log(jsonObj.targets);
 
-        data = jsonObj.targets;
-        console.log(data);
-        data.forEach(function(d) {
-            if(d.isStage === false) {
-                console.log(d.name);
+            data = jsonObj.targets;
+            console.log(data);
+            data.forEach(function(d) {
+                if(d.isStage === false) {
+                    console.log(d.name);
 
-                // console.log(d.blocks);
-                // console.log(Object.keys(d.blocks).length);
+                    // console.log(d.blocks);
+                    // console.log(Object.keys(d.blocks).length);
 
-                for (var value in d.blocks) {
-                    // prints out block type
-                    // console.log(d.blocks[value]["opcode"]);
+                    for (var value in d.blocks) {
+                        // prints out block type
+                        // console.log(d.blocks[value]["opcode"]);
 
-                    // adds blocks to the script temp
-                    scriptTemp.push(d.blocks[value]["opcode"]);
-                }
-                updateVisualization();
+                        // adds blocks to the script temp
+                        scriptTemp.push(d.blocks[value]["opcode"]);
+                    }
+                    updateVisualization();
 
-                // NEW VISUALIZATION! Block Categories
+                    // NEW VISUALIZATION! Block Categories
 
-                // Creates array of dictionaries
-                console.log(groupByOne(scriptTemp));
-                var block_count_two = groupByOne(scriptTemp);
+                    // Creates array of dictionaries
+                    console.log(groupByOne(scriptTemp));
+                    var block_count_two = groupByOne(scriptTemp);
 
-                block_count_two.sort( function(a, b){
-                    return b.value - a.value;
-                });
-
-                var category_data_two = block_count_two;
-
-                // Create Array of Dictionaries for Block Category Counts
-                category_data_two = categoryGroup(category_data_two);
-                new_category_data = groupByOne(category_data_two);
-
-                // Create the bars
-
-                console.log(new_category_data);
-                var cat_bars  = cat_svg.selectAll("rect")
-                    .data(new_category_data);
-
-                cat_bars.enter()
-                    .append("rect")
-                    .attr("class", "bar")
-
-                    // Enter and Update (set the dynamic properties of the elements)
-                    .merge(cat_bars)
-                    .transition()
-                    .attr("x", function(d) {
-                        return cat_x(d.key);
-                    })
-                    .attr("y", function(d) { return cat_y(d.value); })
-                    .attr("width", cat_x.bandwidth())
-                    .attr("height", function(d) { return height - cat_y(d.value); })
-                    .attr("fill", function(d) {
-                        if (d.key === "motion"){
-                            return "#4681db";
-                        }
-                        if (d.key === "control") {
-                            return "#f2ab1d"
-                        }
-                        if (d.key === "event") {
-                            return "#ffcb3f"
-                        }
-                        if (d.key === "looks") {
-                            return "#965ffc"
-                        }
-                        if (d.key === "operators") {
-                            return "#4faa49"
-                        }
-                        if (d.key === "sensing") {
-                            return "#66b2d6"
-                        }
-                        if (d.key === "sound") {
-                            return "#ca70d8"
-                        }
-                        if (d.key === "variables") {
-                            return "#ef7b28"
-                        }
-                        if (d.key === "more_blocks") {
-                            return "#f75976"
-                        }
-                        return "black";
+                    block_count_two.sort( function(a, b){
+                        return b.value - a.value;
                     });
 
-                // Makes new axis
-                cat_svg.selectAll(".xaxis").transition().call(cat_xAxis)
-                    .selectAll("text")
-                    .attr("y", 0)
-                    .attr("x", 9)
-                    .attr("dy", ".35em")
-                    .attr("transform", "rotate(90)")
-                    .style("text-anchor", "start");
+                    var category_data_two = block_count_two;
 
-                var cat_newyAxis =
-                    cat_yAxis.ticks(d3.max(new_category_data, function(d) { return d.value }))
-                        .tickFormat(d3.format("d"));
+                    // Create Array of Dictionaries for Block Category Counts
+                    category_data_two = categoryGroup(category_data_two);
+                    new_category_data = groupByOne(category_data_two);
 
-                cat_svg.selectAll(".yaxis").transition().call(cat_newyAxis);
+                    // Create the bars
 
-                // Exit
-                cat_bars.exit().remove();
+                    console.log(new_category_data);
+                    var cat_bars  = cat_svg.selectAll("rect")
+                        .data(new_category_data);
 
-            }
-        });
-    };
+                    cat_bars.enter()
+                        .append("rect")
+                        .attr("class", "bar")
+
+                        // Enter and Update (set the dynamic properties of the elements)
+                        .merge(cat_bars)
+                        .transition()
+                        .attr("x", function(d) {
+                            return cat_x(d.key);
+                        })
+                        .attr("y", function(d) { return cat_y(d.value); })
+                        .attr("width", cat_x.bandwidth())
+                        .attr("height", function(d) { return height - cat_y(d.value); })
+                        .attr("fill", function(d) {
+                            if (d.key === "motion"){
+                                return "#4681db";
+                            }
+                            if (d.key === "control") {
+                                return "#f2ab1d"
+                            }
+                            if (d.key === "event") {
+                                return "#ffcb3f"
+                            }
+                            if (d.key === "looks") {
+                                return "#965ffc"
+                            }
+                            if (d.key === "operators") {
+                                return "#4faa49"
+                            }
+                            if (d.key === "sensing") {
+                                return "#66b2d6"
+                            }
+                            if (d.key === "sound") {
+                                return "#ca70d8"
+                            }
+                            if (d.key === "variables") {
+                                return "#ef7b28"
+                            }
+                            if (d.key === "more_blocks") {
+                                return "#f75976"
+                            }
+                            return "black";
+                        });
+
+                    // Makes new axis
+                    cat_svg.selectAll(".xaxis").transition().call(cat_xAxis)
+                        .selectAll("text")
+                        .attr("y", 0)
+                        .attr("x", 9)
+                        .attr("dy", ".35em")
+                        .attr("transform", "rotate(90)")
+                        .style("text-anchor", "start");
+
+                    var cat_newyAxis =
+                        cat_yAxis.ticks(d3.max(new_category_data, function(d) { return d.value }))
+                            .tickFormat(d3.format("d"));
+
+                    cat_svg.selectAll(".yaxis").transition().call(cat_newyAxis);
+
+                    // Exit
+                    cat_bars.exit().remove();
+
+                }
+            });
+        };
+        }
+
 
     reader.readAsText(event.target.files[0]);
 
