@@ -5,6 +5,21 @@ var scriptTemp = [];
 var new_category_data = [];
 var jsonObj;
 
+/* Request project jsons and initiate analysis from Scratch */
+function getJSON(){
+    var request = new XMLHttpRequest();
+    request.open('GET', "https://scratch.mit.edu/studios/5142661/");
+    request.responseType = 'json';
+    request.send();
+    request.onload = function() {
+        var project = request.response;
+        args.unshift(project);
+        return project;
+    }
+}
+
+console.log(getJSON());
+
 // SVG MAKE
 var margin = {top: 40, right: 10, bottom: 150, left: 60};
 
