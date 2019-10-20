@@ -111,7 +111,7 @@ $("#scratch_json").change(function() {
         jsonObj = JSON.parse(event.target.result);
         if("objName" in jsonObj) {
             document.getElementById("get_json").style.display="none";
-            document.getElementById("refresh").innerHTML = "Please refresh and upload a JSON from a Scratch 3 Project";
+            document.getElementById("refresh").innerHTML = "Please refresh and upload a JSON created with Scratch 3";
             // document.getElementById('top_image').src='http://i.cubeupload.com/gFmaKG.png'
         }
         else {
