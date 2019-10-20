@@ -6,7 +6,7 @@ body {
 
 h1, h3 {
 	text-align: center;
-	margin-top: 15px;
+	margin-top: 30px;
 }
 
 #block-cat {
@@ -21,4 +21,8 @@ h1, h3 {
 
 img {
 	width:20%;
+}
+
+#demo {
+	display: none;
 }

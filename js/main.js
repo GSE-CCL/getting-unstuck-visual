@@ -18,8 +18,6 @@ function getJSON(){
     }
 }
 
-console.log(getJSON());
-
 // SVG MAKE
 var margin = {top: 40, right: 10, bottom: 150, left: 60};
 
@@ -107,33 +105,24 @@ d3.select("#block-cat").on("change", updateVisualization);
 
 $("#scratch_json").change(function() {
     // will log a FileList object, view gifs below
-    console.log(this.files);
     var reader = new FileReader();
 
     reader.onload = function(event) {
         jsonObj = JSON.parse(event.target.result);
-        console.log(jsonObj);
         if("objName" in jsonObj) {
-            console.log("no");
             document.getElementById("get_json").style.display="none";
             document.getElementById("refresh").innerHTML = "Please refresh and upload a JSON from a Scratch 3 Project";
             // document.getElementById('top_image').src='http://i.cubeupload.com/gFmaKG.png'
         }
         else {
-            console.log(jsonObj.targets);
 
             data = jsonObj.targets;
-            console.log(data);
             data.forEach(function(d) {
                 if(d.isStage === false) {
-                    console.log(d.name);
-
-                    // console.log(d.blocks);
-                    // console.log(Object.keys(d.blocks).length);
 
                     for (var value in d.blocks) {
                         // prints out block type
-                        // console.log(d.blocks[value]["opcode"]);
+                        console.log(d.blocks[value]["opcode"]);
 
                         // adds blocks to the script temp
                         scriptTemp.push(d.blocks[value]["opcode"]);
@@ -158,7 +147,6 @@ $("#scratch_json").change(function() {
 
                     // Create the bars
 
-                    console.log(new_category_data);
                     var cat_bars  = cat_svg.selectAll("rect")
                         .data(new_category_data);
 
@@ -215,8 +203,8 @@ $("#scratch_json").change(function() {
                         .attr("transform", "rotate(90)")
                         .style("text-anchor", "start");
 
-                    var cat_newyAxis =
-                        cat_yAxis.ticks(d3.max(new_category_data, function(d) { return d.value }))
+                    var cat_newyAxis = cat_yAxis
+                        // cat_yAxis.ticks(d3.max(new_category_data, function(d) { return d.value }))
                             .tickFormat(d3.format("d"));
 
                     cat_svg.selectAll(".yaxis").transition().call(cat_newyAxis);
@@ -255,8 +243,6 @@ function updateVisualization() {
     box_blocknames = box_blocknames.filter(function(value) {
         return (value.category === boxVal);
     });
-    console.log(box_blocknames);
-
     var specific_blocks = [];
 
     // Was not filtering so had to do manually
@@ -274,10 +260,7 @@ function updateVisualization() {
         specific_blocks = scriptTemp;
     }
 
-    console.log(specific_blocks);
-
     // Creates array of dictionaries
-    console.log(groupByOne(specific_blocks));
     block_count = groupByOne(specific_blocks);
 
     block_count.sort( function(a, b){
@@ -299,17 +282,12 @@ function updateVisualization() {
     cat_x.domain(new_category_data.map(function(d) { return d.key; }));
     cat_y.domain([0, d3.max(new_category_data, function(d) { return d.value })]);
 
-    console.log(block_count);
-    console.log(block_count.length !== 0);
     if(block_count.length !== 0) {
         document.getElementById("suggestion").innerHTML = "You used " + block_count.length + " " + boxVal + " blocks.";
     }
     else {
         var cat_length = Math.floor((Math.random() * specific_blocks.length) + 1);
-        console.log(box_blocknames);
-        console.log(cat_length);
-        // console.log(box_blocknames[cat_length]);
-        // console.log(box_blocknames[cat_length].label);
+
         document.getElementById("suggestion").innerHTML = "You didn't use any " + boxVal + " blocks in this project. Have you considered using the <b>" + box_blocknames[cat_length].label + "</b> block?";
     }
 
@@ -370,8 +348,9 @@ function updateVisualization() {
         .attr("transform", "rotate(90)")
         .style("text-anchor", "start");
 
-    var newyAxis =
-        yAxis.ticks(d3.max(block_count, function(d) { return d.value }))
+    var newyAxis = yAxis
+        // yAxis.ticks(d3.max(block_count, function(d) { return d.value }))
+            .ticks(10)
             .tickFormat(d3.format("d"));
 
     svg.selectAll(".yaxis").transition().call(newyAxis);
@@ -475,3 +454,15 @@ function categoryGroup(arr) {
 
     return category_dict;
 }
+
+document.getElementById("demo-1").onclick = function(){
+    console.log("hello")
+    document.getElementById("demo").style.display="show";
+}
+
+$(document).ready(function() {
+    $("#demo-1").click(function(event) {
+        // this.append wouldn't work
+        console.log("new hi")
+    });
+});
